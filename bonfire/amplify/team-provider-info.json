@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bonfire-staging-23001-authRole",
+      "UnauthRoleArn": "arn:aws:iam::529464535743:role/amplify-bonfire-staging-23001-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::529464535743:role/amplify-bonfire-staging-23001-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-bonfire-staging-23001-deployment",
+      "UnauthRoleName": "amplify-bonfire-staging-23001-unauthRole",
+      "StackName": "amplify-bonfire-staging-23001",
+      "StackId": "arn:aws:cloudformation:us-east-1:529464535743:stack/amplify-bonfire-staging-23001/c16585d0-57fa-11ed-9449-12387d27f6df",
+      "AmplifyAppId": "dbrztnco87neu"
+    },
+    "categories": {
+      "auth": {
+        "bonfire": {}
+      }
+    }
+  }
+}
