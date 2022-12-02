@@ -3,6 +3,7 @@ import { StyleSheet, Text, SafeAreaView, ScrollView } from 'react-native'
 import { glamping, gokart, pilates, dance } from '../assets/images/activities'
 import Carousel from '../components/Carousel'
 import Searchbar from '../components/Searchbar'
+import DatePicker from 'react-native-date-picker'
 
 const data = [
 	{
