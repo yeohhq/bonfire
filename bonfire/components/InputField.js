@@ -1,23 +1,44 @@
-import { StyleSheet, TextInput, View } from 'react-native'
+import React from 'react'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { Controller } from 'react-hook-form'
 
 export default function InputField({
-	value,
-	setValue,
+	control,
+	name,
+	rules = {},
 	placeholder,
 	secureTextEntry,
 	keyboardType = 'default'
 }) {
 	return (
-		<View style={styles.container}>
-			<TextInput
-				value={value}
-				onChangeText={setValue}
-				placeholder={placeholder}
-				style={styles.input}
-				secureTextEntry={secureTextEntry}
-				keyboardType={keyboardType}
-			/>
-		</View>
+		<Controller
+			control={control}
+			name={name}
+			rules={rules}
+			render={({
+				field: { value, onChange, onBlur },
+				fieldState: { error }
+			}) => (
+				<>
+					<View style={styles.container}>
+						<TextInput
+							value={value}
+							onChangeText={onChange}
+							onBlur={onBlur}
+							placeholder={placeholder}
+							style={styles.input}
+							secureTextEntry={secureTextEntry}
+							keyboardType={keyboardType}
+						/>
+					</View>
+					{error && (
+						<Text style={styles.error}>
+							{error.message || 'Error'}
+						</Text>
+					)}
+				</>
+			)}
+		/>
 	)
 }
 
@@ -34,5 +55,10 @@ const styles = StyleSheet.create({
 		// Text
 		justifyContent: 'center'
 	},
-	input: {}
+	error: {
+		color: '#DD4D44',
+		alignSelf: 'stretch',
+		fontFamily: 'Poppins_300Light',
+		paddingBottom: 8
+	}
 })

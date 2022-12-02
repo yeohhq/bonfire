@@ -1,23 +1,12 @@
-import { useContext } from 'react'
-import { StyleSheet, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import AppStack from './AppStack'
-import AuthStack from './AuthStack'
 
 export default function AppNav() {
-	// if (isLoading) {
-	// 	return (
-	// 		<View style={styles.loading}>
-	// 			<ActivityIndicator size={'large'} />
-	// 		</View>
-	// 	)
-	// }
-
 	return (
 		<View style={styles.root}>
 			<NavigationContainer>
-				{/* <AppStack /> */}
-				<AuthStack />
+				<AppStack />
 			</NavigationContainer>
 		</View>
 	)

@@ -2,22 +2,39 @@ import { useState } from 'react'
 import { StyleSheet, SafeAreaView, View } from 'react-native'
 import Button from '../components/Buttons/Button'
 import InputField from '../components/InputField'
+import { useForm } from 'react-hook-form'
+import { useRoute } from '@react-navigation/native'
+import { Auth } from 'aws-amplify'
 
 export default function VerifyEmail({ navigation }) {
-	// States
-	const [verificationCode, setVerificationCode] = useState('')
+	const route = useRoute()
+	const { control, handleSubmit, watch } = useForm({
+		defaultValues: { username: route?.params?.username }
+	})
+
+	const username = watch('username')
 
 	// Handlers
-	const handleVerify = () => {
-		console.warn('verify')
+	const handleVerify = async (data) => {
+		try {
+			await Auth.confirmSignUp(data.username, data.code)
+			navigation.navigate('Login')
+		} catch (e) {
+			Alert.alert('Oops', e.message)
+		}
 	}
 
 	const handleLogin = () => {
 		navigation.navigate('Login')
 	}
 
-	const handleResendCode = () => {
-		console.warn('resending code')
+	const handleResendCode = async (data) => {
+		try {
+			await Auth.resendSignUp(data.username)
+			Alert.alert('Success', 'Code was resent to your email')
+		} catch (e) {
+			Alert.alert('Oops', e.message)
+		}
 	}
 
 	return (
@@ -25,11 +42,26 @@ export default function VerifyEmail({ navigation }) {
 			<View style={styles.container}>
 				<View>
 					<InputField
-						placeholder={'Enter your verification code'}
-						value={verificationCode}
-						setValue={setVerificationCode}
+						name="username"
+						control={control}
+						placeholder="Username"
+						rules={{
+							required: 'Username code is required'
+						}}
 					/>
-					<Button title="Verify" onPress={handleVerify} fullWidth />
+					<InputField
+						name="code"
+						control={control}
+						placeholder="Enter your confirmation code"
+						rules={{
+							required: 'Confirmation code is required'
+						}}
+					/>
+					<Button
+						title="Verify"
+						onPress={handleSubmit(handleVerify)}
+						fullWidth
+					/>
 					<Button
 						title="Resend code"
 						onPress={handleResendCode}

@@ -1,19 +1,24 @@
-import { useState } from 'react'
-import { StyleSheet, SafeAreaView, View, Text } from 'react-native'
+import { StyleSheet, SafeAreaView, View, Text, Alert } from 'react-native'
 import Button from '../components/Buttons/Button'
 import InputField from '../components/InputField'
+import { useForm } from 'react-hook-form'
+import { Auth } from 'aws-amplify'
 
 export default function ForgotPassword({ navigation }) {
-	// States
-	const [username, setUsername] = useState('')
+	const { control, handleSubmit } = useForm()
 
 	// Handlers
-	const handleSend = () => {
-		console.warn('send')
+	const handleSend = async (data) => {
+		try {
+			await Auth.forgotPassword(data.username)
+			navigation.navigate('ResetPassword')
+		} catch (e) {
+			Alert.alert('Oops', e.message)
+		}
 	}
 
-	const handleEnterResetCode = () => {
-		navigation.navigate('ResetPassword')
+	const handleLogin = () => {
+		navigation.navigate('Login')
 	}
 
 	return (
@@ -22,18 +27,25 @@ export default function ForgotPassword({ navigation }) {
 				<View>
 					<Text style={styles.text}>
 						You will receive an email associated with this username
-						containing a password reset code.
+						with a reset code to reset your password.
 					</Text>
 					<InputField
-						placeholder={'Username'}
-						value={username}
-						setValue={setUsername}
+						name="username"
+						control={control}
+						placeholder="Username"
+						rules={{
+							required: 'Username is required'
+						}}
 					/>
-					<Button title="Send code" onPress={handleSend} fullWidth />
+					<Button
+						title="Send"
+						onPress={handleSubmit(handleSend)}
+						fullWidth
+					/>
 
 					<Button
-						title="Proceed with Reset Code"
-						onPress={handleEnterResetCode}
+						title="Back to Login"
+						onPress={handleLogin}
 						type="tertiary"
 						fullWidth
 					/>
